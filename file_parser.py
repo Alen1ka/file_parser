@@ -1,4 +1,5 @@
 import requests
+import time
 from bs4 import BeautifulSoup
 
 n = 0
@@ -19,6 +20,7 @@ while n < 100:
     href = ''
 
     # отправим get-запрос на сайт и сохраним ответ в переменную
+    time.sleep(5)
     response = requests.get(url)
     # прогоняем документ через bs4, это дает нам объект bs4
     # он представляет собой документ в виде вложенной структуры "html.parser"
@@ -48,6 +50,7 @@ while n < 100:
                     else:
                         print_letters.append(letter)
 
+                time.sleep(5)
                 response = requests.get(url)
 
                 # если в заголовках, есть mime-тип который нужен
