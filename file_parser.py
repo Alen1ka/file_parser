@@ -1,5 +1,4 @@
 import requests
-import time
 from bs4 import BeautifulSoup
 
 n = 0
@@ -14,16 +13,28 @@ while n < 100:
           'officedocument.wordprocessingml.document'
     # соединяем строки получая целую ссылку
     url = "".join(url)
+    print(url)
     # соединяем строки получая целый документ
     doc = "".join(doc)
     # объявляем ссылку
     href = ''
-    # чтобы не было много запросов используем функцию ожидания
-    # котрая останавливает выполнение программы на 5 секунд
-    time.sleep(5)
 
+    header = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv: 69.0)'
+                      'Gecko/20100101 Firefox/69.0',
+        'Accept': 'text/html,application/xhtml+xml,application/xml'
+                  'q=0.9,*/*;q=0.8',
+        'Accept-Language': 'ru,en-US;q=0.5',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'DNT': '1',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
+        'Pragma': 'no-cache',
+        'Cache-Control': 'no-cache'}
+    
     # отправим get-запрос на сайт и сохраним ответ в переменную
-    response = requests.get(url)
+    response = requests.get(url, headers=header)
+    
     # прогоняем документ через bs4, это дает нам объект bs4
     # он представляет собой документ в виде вложенной структуры "html.parser"
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -40,6 +51,7 @@ while n < 100:
                 print_letters = []
                 # для вывода ссылки только один раз объявим переменную output
                 output = 0
+                url = []
 
                 # для вывода правильной ссылки
                 # удаляем из начала ссылки часть "/url?q="
@@ -52,12 +64,9 @@ while n < 100:
                     else:
                         print_letters.append(letter)
 
-                # чтобы не было много запросов используем функцию ожидания
-                # котрая останавливает выполнение программы на 5 секунд
-                time.sleep(5)
-
                 # отправим get-запрос на сайт и сохраним ответ в переменную
-                response = requests.get(url)
+                response = requests.get(url, headers=header)
+
                 # если в заголовках, есть mime-тип который нужен
                 # берем название файла
                 # для этого находим последний слэш и место где он находится
