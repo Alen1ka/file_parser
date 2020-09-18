@@ -19,10 +19,11 @@ while n < 100:
     # объявляем ссылку
     href = ''
 
+    # отправим get-запрос на сайт и сохраним ответ в переменную
     header = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv: 69.0)'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv: 69.0) '
                       'Gecko/20100101 Firefox/69.0',
-        'Accept': 'text/html,application/xhtml+xml,application/xml'
+        'Accept': 'text/html,application/xhtml+xml,application/xml;'
                   'q=0.9,*/*;q=0.8',
         'Accept-Language': 'ru,en-US;q=0.5',
         'Accept-Encoding': 'gzip, deflate, br',
@@ -31,8 +32,6 @@ while n < 100:
         'Upgrade-Insecure-Requests': '1',
         'Pragma': 'no-cache',
         'Cache-Control': 'no-cache'}
-    
-    # отправим get-запрос на сайт и сохраним ответ в переменную
     response = requests.get(url, headers=header)
     
     # прогоняем документ через bs4, это дает нам объект bs4
