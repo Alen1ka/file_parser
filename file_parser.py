@@ -12,22 +12,38 @@ while n < 100:
     doc = 'application/vnd.openxmlformats-' \
           'officedocument.wordprocessingml.document'
     
+    '''# соединяем строки получая целую ссылку
+    url = "".join(url)
+    # соединяем строки получая целый документ
+    doc = "".join(doc)'''
     # объявляем ссылку
     href = ''
 
-    # отправим get-запрос на сайт и сохраним ответ в переменную
+    # зададим headers,отправим get-запрос на сайт и сохраним ответ в переменную
     header = {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv: 69.0) '
-                        'Gecko/20100101 Firefox/69.0',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;'
-                    'q=0.9,*/*;q=0.8',
-          'Accept-Language': 'ru,en-US;q=0.5',
-          'Accept-Encoding': 'gzip, deflate, br',
-          'DNT': '1',
-          'Connection': 'keep-alive',
-          'Upgrade-Insecure-Requests': '1',
-          'Pragma': 'no-cache',
-          'Cache-Control': 'no-cache'}
+        # указываем программное обеспечение клиента и его характеристики
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv: 69.0) '
+                      'Gecko/20100101 Firefox/69.0',
+        # указываем список допустимых форматов ресурса
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;'
+                  'q=0.8',
+        # указываем один или несколько естественных языков содержимого
+        'Accept-Language': 'ru,en-US;q=0.5',
+        # указываем перечень поддерживаемых способов кодирования содержимого
+        # сущности при передаче
+        'Accept-Encoding': 'gzip, deflate, br',
+        # указываем Do Not Track для отключения отслеживания веб - службами
+        'DNT': '1',
+        # указываем сведения о проведении соединения
+        'Connection': 'keep-alive',
+        # обновления небезопасных запросов до безопасной альтернативы
+        # до того, как браузер их получит
+        'Upgrade-Insecure-Requests': '1',
+        # указываем особенные опции выполнения операции
+        'Pragma': 'no-cache',
+        # указываем основные директивы для управления кэшированием
+        'Cache-Control': 'no-cache'
+    }
     response = requests.get(url, headers=header)
 
     # прогоняем документ через bs4, это дает нам объект bs4
