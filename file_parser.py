@@ -11,29 +11,25 @@ while n < 100:
           "HeB1A_U4ChDy0wN6BAgEDA&biw=1422&bih=642"
     doc = 'application/vnd.openxmlformats-' \
           'officedocument.wordprocessingml.document'
-    # соединяем строки получая целую ссылку
-    url = "".join(url)
-    print(url)
-    # соединяем строки получая целый документ
-    doc = "".join(doc)
+    
     # объявляем ссылку
     href = ''
 
     # отправим get-запрос на сайт и сохраним ответ в переменную
     header = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv: 69.0) '
-                      'Gecko/20100101 Firefox/69.0',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;'
-                  'q=0.9,*/*;q=0.8',
-        'Accept-Language': 'ru,en-US;q=0.5',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'DNT': '1',
-        'Connection': 'keep-alive',
-        'Upgrade-Insecure-Requests': '1',
-        'Pragma': 'no-cache',
-        'Cache-Control': 'no-cache'}
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv: 69.0) '
+                        'Gecko/20100101 Firefox/69.0',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;'
+                    'q=0.9,*/*;q=0.8',
+          'Accept-Language': 'ru,en-US;q=0.5',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'DNT': '1',
+          'Connection': 'keep-alive',
+          'Upgrade-Insecure-Requests': '1',
+          'Pragma': 'no-cache',
+          'Cache-Control': 'no-cache'}
     response = requests.get(url, headers=header)
-    
+
     # прогоняем документ через bs4, это дает нам объект bs4
     # он представляет собой документ в виде вложенной структуры "html.parser"
     soup = BeautifulSoup(response.text, 'html.parser')
