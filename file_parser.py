@@ -11,11 +11,6 @@ while n < 100:
           "HeB1A_U4ChDy0wN6BAgEDA&biw=1422&bih=642"
     doc = 'application/vnd.openxmlformats-' \
           'officedocument.wordprocessingml.document'
-    
-    '''# соединяем строки получая целую ссылку
-    url = "".join(url)
-    # соединяем строки получая целый документ
-    doc = "".join(doc)'''
     # объявляем ссылку
     href = ''
 
@@ -31,7 +26,7 @@ while n < 100:
         'Accept-Language': 'ru,en-US;q=0.5',
         # указываем перечень поддерживаемых способов кодирования содержимого
         # сущности при передаче
-        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept-Encoding': 'gzip, deflate',
         # указываем Do Not Track для отключения отслеживания веб - службами
         'DNT': '1',
         # указываем сведения о проведении соединения
@@ -49,9 +44,10 @@ while n < 100:
     # прогоняем документ через bs4, это дает нам объект bs4
     # он представляет собой документ в виде вложенной структуры "html.parser"
     soup = BeautifulSoup(response.text, 'html.parser')
+
     # с помощью функции поиска bs4 находим
     # и берем нужные теги div в ходе страницы запроса и в них находим теги a
-    for div in soup.find_all("div", class_="kCrYT"):
+    for div in soup.find_all("div"):
         for a in div.find_all("a"):
             # если тег не содержит class h3 берем ссылку
             z = a.find('h3')
