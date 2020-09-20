@@ -11,11 +11,12 @@ while n < 100:
           "HeB1A_U4ChDy0wN6BAgEDA&biw=1422&bih=642"
     doc = 'application/vnd.openxmlformats-' \
           'officedocument.wordprocessingml.document'
+
     # объявляем ссылку
     href = ''
 
     # зададим headers,отправим get-запрос на сайт и сохраним ответ в переменную
-    header = {
+    headers = {
         # указываем программное обеспечение клиента и его характеристики
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv: 69.0) '
                       'Gecko/20100101 Firefox/69.0',
@@ -39,7 +40,7 @@ while n < 100:
         # указываем основные директивы для управления кэшированием
         'Cache-Control': 'no-cache'
     }
-    response = requests.get(url, headers=header)
+    response = requests.get(url, headers=headers)
 
     # прогоняем документ через bs4, это дает нам объект bs4
     # он представляет собой документ в виде вложенной структуры "html.parser"
@@ -47,7 +48,7 @@ while n < 100:
 
     # с помощью функции поиска bs4 находим
     # и берем нужные теги div в ходе страницы запроса и в них находим теги a
-    for div in soup.find_all("div"):
+    for div in soup.find_all("div", class_="r"):
         for a in div.find_all("a"):
             # если тег не содержит class h3 берем ссылку
             z = a.find('h3')
@@ -61,18 +62,18 @@ while n < 100:
                 url = []
 
                 # для вывода правильной ссылки
-                # удаляем из начала ссылки часть "/url?q="
                 # идем по буквам и удаляем всё что есть после &
-                deleted_start = href[7:]
-                for letter in deleted_start:
-                    if letter == '&' and output != 1:
-                        url = ''.join(print_letters)  # делаем строку из списка
+                for letter in href:
+                    if letter == '?' and output != 1:
                         output = +1
-                    else:
+                    if output != 1:
                         print_letters.append(letter)
+                url = ''.join(print_letters)  # делаем строку из списка
 
+                # изменим headers
+                headers.update({'Accept-Encoding': 'gzip, deflate, br'})
                 # отправим get-запрос на сайт и сохраним ответ в переменную
-                response = requests.get(url, headers=header)
+                response = requests.get(url, headers=headers, timeout=15)
 
                 # если в заголовках, есть mime-тип который нужен
                 # берем название файла
