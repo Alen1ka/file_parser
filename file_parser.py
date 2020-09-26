@@ -80,11 +80,24 @@ while n < 100:
                 # для этого находим последний слэш и место где он находится
                 # берем все что есть после него
                 if response.headers['Content-Type'].find(doc) != -1:
-                    find_symbol = '/'
-                    number = url.rfind(find_symbol)
-                    title = url[number:]
-                    title = 'files' + title
-
+                    if url.find("%") == -1:
+                        find_symbol = '/'
+                        number = url.rfind(find_symbol)
+                        title = url[number:]
+                        title = 'files' + title
+                        print(title)
+                    else:
+                        for spans in a.find_all("span", class_="eipWBe"):
+                            for span in spans.find_all("span"):
+                                # удаляем из начала ссылки часть "/url?q="
+                                # deleted_start = span[7:]
+                                name = " ".join(span.contents)
+                                find_symbol = '›'
+                                number = name.rfind(find_symbol)
+                                deleted_start = name[number + 2:]
+                                title = deleted_start[0:]
+                                title = 'files/' + title + ".docx"
+                                print(title)
                     # скачиваем файл
                     with open(title, 'wb') as f:
                         f.write(response.content)
