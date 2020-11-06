@@ -9,4 +9,3 @@ COPY . /home/alena/python/files_parser/
 WORKDIR /home/alena/python/files_parser/
 
 CMD ["python", "files_parser.py"]
-EXPOSE 5000
