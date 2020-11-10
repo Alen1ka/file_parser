@@ -1,8 +1,8 @@
+from bs4 import BeautifulSoup
+import requests
 import logging
 import os
-import requests
 import time
-from bs4 import BeautifulSoup
 
 logging.basicConfig(filename='log.txt', filemode='a',
                     format='%(asctime)s %(msecs)d- %(process)d -%(levelname)s - %(message)s',
