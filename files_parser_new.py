@@ -1,10 +1,25 @@
+import logging
 import os
 import requests
 import time
 from bs4 import BeautifulSoup
 
+logging.basicConfig(filename='log.txt', filemode='a',
+                    format='%(asctime)s %(msecs)d- %(process)d -%(levelname)s - %(message)s',
+                    datefmt='%d-%b-%y %H:%M:%S %p',
+                    level=logging.DEBUG)
+logging.basicConfig(filename='log.txt', filemode='a',
+                    format='%(asctime)s %(msecs)d- %(process)d -%(levelname)s - %(message)s',
+                    datefmt='%d-%b-%y %H:%M:%S %p',
+                    level=logging.ERROR)
+logging.basicConfig(filename='log.txt', filemode='a',
+                    format='%(asctime)s %(msecs)d- %(process)d -%(levelname)s - %(message)s',
+                    datefmt='%d-%b-%y %H:%M:%S %p',
+                    level=logging.INFO)
+
 n = 0
 while n < 100:
+    logging.info("cycle start")
     print(n)
     # для того чтобы длина строки не превышала нужную нам длину
     # ссылку и формат документа переносим на следующую строку
@@ -114,9 +129,15 @@ while n < 100:
     except requests.exceptions.ReadTimeout:
         # переподключение к серверу
         time.sleep(3)
+        logging.error('Error. Read timeout occured.')
+
     except requests.exceptions.ConnectionError:
         # переподключение к серверу
         time.sleep(3)
+        logging.error('Error. Connection timeout occured.')
+
+    except Exception:
+        logging.error('Unknown error.')
 
     # добавим 10 чтобы перейти на следующую страницу
     n += 10
