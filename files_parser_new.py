@@ -8,17 +8,9 @@ logging.basicConfig(filename='log.txt', filemode='a',
                     format='%(asctime)s %(msecs)d- %(process)d -%(levelname)s - %(message)s',
                     datefmt='%d-%b-%y %H:%M:%S %p',
                     level=logging.DEBUG)
-logging.basicConfig(filename='log.txt', filemode='a',
-                    format='%(asctime)s %(msecs)d- %(process)d -%(levelname)s - %(message)s',
-                    datefmt='%d-%b-%y %H:%M:%S %p',
-                    level=logging.ERROR)
-logging.basicConfig(filename='log.txt', filemode='a',
-                    format='%(asctime)s %(msecs)d- %(process)d -%(levelname)s - %(message)s',
-                    datefmt='%d-%b-%y %H:%M:%S %p',
-                    level=logging.INFO)
 
-n = 0
-while n < 100:
+# добавляем 10 чтобы перейти на следующую страницу
+for n in range(0, 100, 10):
     logging.info("cycle start")
     print(n)
     # для того чтобы длина строки не превышала нужную нам длину
@@ -71,8 +63,7 @@ while n < 100:
             for a in div.find_all("a"):
 
                 # если тег не содержит class h3 берем ссылку
-                z = a.find('h3')
-                if z is not None:
+                if a.find('h3') is not None:
                     url = a.get('href')
 
                     # изменим headers
@@ -85,44 +76,44 @@ while n < 100:
                     # для этого находим последний слэш и место где он находится
                     # берем все что есть после него
                     if response.headers.get('Content-Type') is not None:
-                        if response.headers['Content-Type'].find(doc) != -1:
+                        if doc in response.headers['Content-Type']:
 
                             # создаем папку files
                             if not os.path.isdir("files"):
                                 os.mkdir("files")
 
                             # создаем название файла
-                            for spa in a.find_all("span", class_="dyjrff qzEoUe"):
-                                for span in spa.find_all("span"):
-
-                                    name = " ".join(span.contents)
-                                    find_symbol = '›'
-                                    number = name.rfind(find_symbol)
+                            for span_class in a.find_all("span", class_="dyjrff qzEoUe"):
+                                for span in span_class.find_all("span"):
+                                    name = ' '.join(span.contents)
                                     # удаляем из начала ссылки часть
-                                    deleted_start = name[number + 2:]
-                                    title = deleted_start[0:]
-                                    if title.find('/'):
+                                    title = name[name.rfind('›') + len('> '):]
+                                    if '/' in title:
                                         title = title.replace('/', '.')
 
-                                    # если в названии ссылки есть "..."
-                                    # и в ссылке нет "%"
-                                    # то стараеися привести ее к виду без "..."
-                                    if title.find("...") != -1:
-                                        if url.find("%") == -1:
-                                            find_symbol = '/'
-                                            number = url.rfind(find_symbol)
-                                            title = url[number+1:]
+                                    # если в названии ссылки есть '...'
+                                    # и в ссылке нет '%'
+                                    # то стараемся привести ее к виду без '...'
+                                    if '...' in title:
+                                        if '%' not in url:
+                                            title = url[url.rfind('/') + len('/'):]
 
                                     # добавляем в конец файла расширение
                                     # если расширения нету
-                                    if title.find('.docx') == -1:
+                                    if not title.endswith('.docx'):
                                         title = title + '.docx'
 
+                                    # если скаченный файл существует
+                                    # то новый будет иметь название файл(1) или файл(2) и т.д.
+                                    num = 0
+                                    repeat_title = title
+                                    while os.path.exists('files/' + title):
+                                        num += 1
+                                        title = f"{repeat_title[:repeat_title.rfind('.')]} ({num}).docx"
                                     print(title)
-                                    title = 'files/' + title
 
                                     # скачиваем файл
-                                    with open(title, 'wb') as f:
+                                    with open('files/' + title, 'wb') as f:
                                         f.write(response.content)
                                     f.close()
 
@@ -138,8 +129,5 @@ while n < 100:
 
     except Exception:
         logging.error('Unknown error.')
-
-    # добавим 10 чтобы перейти на следующую страницу
-    n += 10
 
 logging.info("end of program")
